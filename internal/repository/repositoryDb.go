@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/Masterminds/squirrel"
+	// use pq as a library to create postgres client
 	_ "github.com/lib/pq"
-	logger "github.com/sirupsen/logrus"
 	"os"
 	"strconv"
 )
@@ -57,7 +57,6 @@ func NewDB() (*sql.DB, error) {
 
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s sslmode=disable",
 		host, port, user, dbname, password)
-	logger.Info("db info:", psqlInfo)
 	db, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
 		return nil, err

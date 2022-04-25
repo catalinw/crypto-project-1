@@ -29,8 +29,8 @@ func (m *CryptoMicroservice) CreateChallenge(ctx echo.Context) error {
 			return
 		}
 	}()
-	request := public.CreateChallengeRequestBody{}
-	if err := json.Unmarshal(requestBody, &request); err != nil {
+	request := &public.CreateChallengeRequestBody{}
+	if err := json.Unmarshal(requestBody, request); err != nil {
 		logger.Error(domain.CryptoAPIError, domain.UnexpectedError,
 			"could not unmarshal request ", string(requestBody), err)
 		return ctx.JSON(http.StatusBadRequest, public.ApiResponse{
@@ -78,8 +78,8 @@ func (m *CryptoMicroservice) VerifyChallenge(ctx echo.Context) error {
 		}
 	}()
 
-	request := public.VerifyChallengeRequestBody{}
-	if err := json.Unmarshal(requestBody, &request); err != nil {
+	request := &public.VerifyChallengeRequestBody{}
+	if err := json.Unmarshal(requestBody, request); err != nil {
 		logger.Error(domain.CryptoAPIError, domain.UnexpectedError, "could not unmarshal request ", err)
 		return ctx.JSON(http.StatusBadRequest, public.ApiResponse{
 			Result: &domain.ChallengeValidationResult{
