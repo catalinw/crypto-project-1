@@ -116,7 +116,7 @@ func (m *CryptoMicroservice) VerifyChallenge(ctx echo.Context) error {
 	logger.Info(message)
 	return ctx.JSON(http.StatusOK, public.ApiResponse{
 		Result:  result,
-		Code:    public.ChallengeValidationsucceeded,
+		Code:    public.ChallengeValidationSucceeded,
 		Message: message,
 	})
 }

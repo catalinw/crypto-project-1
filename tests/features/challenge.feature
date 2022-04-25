@@ -3,13 +3,13 @@ Feature: challenge
   As a bot that uses the crypto api
   I need to be able to create and validate a challenge
 
-  Scenario: challenge was successfully created
+  Scenario: challenge was successfully created and validated
     Given a clean database
     When I send a request to create a challenge
     And I wait for the request to be processed
     Then the challenge should be created and valid
 
-  Scenario: challenge was successfully created and validated
+  Scenario: created challenge was successfully validated using a token
     Given a clean database
     Given a challenge that was previously created
     When I send a request to validate a challenge

@@ -3,7 +3,7 @@ package public
 const (
 	ServicePrefix = "CryptoAPI-"
 
-	ChallengeValidationsucceeded = ServicePrefix + "ChallengeValidationsucceeded"
+	ChallengeValidationSucceeded = ServicePrefix + "ChallengeValidationSucceeded"
 	ChallengeValidationFailed    = ServicePrefix + "ChallengeValidationFailed"
 	ChallengeCreateFailed        = ServicePrefix + "ChallengeCreateFailed"
 	ChallengeCreateSucceed       = ServicePrefix + "ChallengeCreateSucceed"
