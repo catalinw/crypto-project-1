@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  crypto-api:
+    build: ./
+    ports:
+      - 7777:7777
+    depends_on:
+      - db
+    networks:
+      - fullstack
+    environment:
+      - PGPORT=5432
+      - PGHOST=db
+      - PGDATABASE=postgres
+      - PGUSER=postgres
+      - PGPASSWORD=postgres
+  db:
+    restart: always
+    image: library/postgres:latest
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
+    networks:
+      - fullstack
+    environment:
+      POSTGRES_PASSWORD: 'postgres'
+
+networks:
+  fullstack:
+    driver: bridge
