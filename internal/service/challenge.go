@@ -9,6 +9,7 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/pem"
+	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/google/uuid"
 	logger "github.com/sirupsen/logrus"
@@ -22,25 +23,34 @@ type ChallengeService interface {
 }
 
 type challengeService struct {
-	repo *repository.Repo
+	repo *repository.Repository
+	now  func() time.Time
 }
 
 const (
 	nonceTimeToLive = time.Minute * 5
+	publicKeyHeader = "kid"
 )
 
-func NewChallengeService(repo *repository.Repo) ChallengeService {
+func NewChallengeService(repo *repository.Repository, now func() time.Time) ChallengeService {
 	return &challengeService{
-		repo: repo,
+		repo,
+		now,
 	}
 }
 
 func (cs *challengeService) CreateChallenge(pubKey string) (*domain.Challenge, error) {
-	return cs.repo.ChallengeRepo.CreateChallenge(pubKey, uuid.NewString(), time.Now().Add(nonceTimeToLive).Unix())
+	// validate public key
+	if _, err := decompressPublicKey(pubKey); err != nil {
+		return nil, err
+	}
+
+	return cs.repo.ChallengeRepo.CreateChallenge(pubKey, uuid.NewString(), cs.now().Add(nonceTimeToLive).Unix())
 }
 
 func (cs *challengeService) VerifyChallenge(signedToken string) (*domain.ChallengeValidationResult, error) {
 	claims := &jwt.StandardClaims{}
+
 	token, err := jwt.ParseWithClaims(signedToken, claims, getPublicKey)
 	if err != nil {
 		logger.Error(domain.CryptoAPIError, domain.UnexpectedError, "failed to parse and validate token ", err)
@@ -68,7 +78,7 @@ func (cs *challengeService) VerifyChallenge(signedToken string) (*domain.Challen
 		}, nil
 	}
 
-	if challenges[0].ExpiresAt < time.Now().Unix() {
+	if challenges[0].ExpiresAt < cs.now().Unix() {
 		return &domain.ChallengeValidationResult{
 			Valid:           false,
 			ValidationError: "expired nonce",
@@ -81,7 +91,23 @@ func (cs *challengeService) VerifyChallenge(signedToken string) (*domain.Challen
 }
 
 func getPublicKey(token *jwt.Token) (interface{}, error) {
-	decompressedPubKey, err := decompressPublicKey((token.Header["kid"]).(string))
+	pubKeyHeader, found := token.Header[publicKeyHeader]
+	if !found {
+		message := "public key header not found"
+		logger.Error(domain.CryptoAPIError, domain.UnexpectedError, message)
+		err := errors.New(message)
+		return nil, err
+	}
+
+	compressedPublicKey, ok := pubKeyHeader.(string)
+	if !ok {
+		message := "failed to parse public key header to string"
+		logger.Error(domain.CryptoAPIError, domain.UnexpectedError, message)
+		err := errors.New(message)
+		return nil, err
+	}
+
+	decompressedPubKey, err := decompressPublicKey(compressedPublicKey)
 	if err != nil {
 		logger.Error(domain.CryptoAPIError, domain.UnexpectedError, "failed to decompress public key ", err)
 		return nil, err

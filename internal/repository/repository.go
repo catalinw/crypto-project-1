@@ -1,11 +1,11 @@
 package repository
 
-type Repo struct {
-	ChallengeRepo ChallengeRepo
+type Repository struct {
+	ChallengeRepo ChallengeRepository
 }
 
-func NewRepo() *Repo {
-	return &Repo{
-		ChallengeRepo: &challengeDbRepo{},
+func NewRepository(challengeRepository ChallengeRepository) *Repository {
+	return &Repository{
+		ChallengeRepo: challengeRepository,
 	}
 }

@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "758c6005-48d3-4515-972d-7b38219aedb3",
+		"name": "welthee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:7777/v1/challenge",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pubKey\":\"H4sIAAAAAAAA/4SQQU4EMQwEv5TY1e34OZmdyf+fgBaEQFyQb6U6uCvu7yMQRfPE0JAIXjQZgwupf8xxj82NfVWhKjWLy0ebru2dg2Rqquk/nDd3gqaLiZBcGccnFVdJ0yG8eWU6var98EqqtFxfsiL7/UPNbEnKRad8I5+yZOdKa2pn+eIQtDe7qqaf2pDTx7eny0IsVRXLEJw0EZfBng7fRmRrcGq58s7P/b+6iQf+axbjAwAA//8BAAD//0A4Ig9qAQAA\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7777/v1/challenge",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7777",
+					"path": [
+						"v1",
+						"challenge"
+					]
+				},
+				"description": "Create challenge"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:7777/v1/verify-challenge",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\":\"eyJhbGciOiJFUzI1NiIsImtpZCI6Ikg0c0lBQUFBQUFBQS80U1FRVTRFTVF3RXY1VFkxZTM0T1ptZHlmK2ZnQmFFUUZ5UWI2VTZ1Q3Z1N3lNUVJmUEUwSkFJWGpRWmd3dXBmOHh4ajgyTmZWV2hLaldMeTBlYnJ1MmRnMlJxcXVrL25EZDNncWFMaVpCY0djY25GVmRKMHlHOGVXVTZ2YXI5OEVxcXRGeGZzaUw3L1VQTmJFbktSYWQ4STUreVpPZEthMnBuK2VJUXREZTdxcWFmMnBEVHg3ZW55MElzVlJYTEVKdzBFWmZCbmc3ZlJtUnJjR3E1OHM3UC9iKzZpUWYrYXhiakF3QUEvLzhCQUFELy8wQTRJZzlxQVFBQSIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ3aGVsdGVlIiwiZXhwIjoxNjUwOTEwMjIxLCJqdGkiOiI0YjhiMzg4Ny1lMTEzLTRlMjctYWRiNC0wNmY5YWE2NmMzOTUiLCJpYXQiOjE2NTA5MDk5MjEsIm5iZiI6MTY1MDkwOTkyMX0.EvrMAgzADKdJz1aRa3yejnz_3299iYpCisB5UINHRhkhuupwSL-AEkdGEyM2MecsDMzcBkfWhP7aVfcjbNVXTQ\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7777/v1/verify-challenge",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7777",
+					"path": [
+						"v1",
+						"verify-challenge"
+					]
+				},
+				"description": "Verify challenge"
+			},
+			"response": []
+		}
+	]
+}

@@ -6,6 +6,7 @@ import (
 	"crypto-project-1/internal/repository"
 	"crypto-project-1/internal/service"
 	logger "github.com/sirupsen/logrus"
+	"time"
 )
 
 const (
@@ -26,8 +27,8 @@ func main() {
 	}
 
 	// initialize dependencies
-	repository := repository.NewRepo()
-	microservice := app.NewCryptoMicroservice(service.NewChallengeService(repository))
+	repo := repository.NewRepository(&repository.ChallengeDbRepository{})
+	microservice := app.NewCryptoMicroservice(service.NewChallengeService(repo, time.Now))
 
 	// create routes
 	httpServer := app.NewServer(microservice)

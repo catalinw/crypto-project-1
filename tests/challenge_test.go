@@ -71,11 +71,11 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 }
 
 func (ct *challengeTest) aCleanDatabase() error {
-	qb := ct.dbQueryBuilder().
+	queryBuilder := ct.dbQueryBuilder().
 		Delete(challengeTableName).
 		Where(squirrel.Eq{"public_key": ct.publicKey})
 
-	_, err := qb.Exec()
+	_, err := queryBuilder.Exec()
 	if err != nil {
 		return fmt.Errorf("TEST FAILED: failed to clean database, err: %w", err)
 	}
@@ -92,12 +92,12 @@ func (ct *challengeTest) iSendARequestToCreateAChallenge() error {
 		return fmt.Errorf("TEST FAILED: failed to marshal create challenge request body, err: %w", err)
 	}
 
-	req, err := http.NewRequest(http.MethodPost, "http://localhost:7777/v1/challenge", bytes.NewBuffer(jsonBody))
+	request, err := http.NewRequest(http.MethodPost, "http://localhost:7777/v1/challenge", bytes.NewBuffer(jsonBody))
 	if err != nil {
 		return fmt.Errorf("TEST FAILED: failed to create http request, err: %w", err)
 	}
 	client := &http.Client{}
-	response, err := client.Do(req)
+	response, err := client.Do(request)
 	if err != nil {
 		return fmt.Errorf("TEST FAILED: failed to send request to API endpoint, err: %w", err)
 	}
@@ -117,11 +117,11 @@ func (ct *challengeTest) iWaitForTheRequestToBeProcessed() error {
 }
 
 func (ct *challengeTest) theChallengeShouldBeCreatedAndValid() error {
-	qb := ct.dbQueryBuilder().
+	queryBuilder := ct.dbQueryBuilder().
 		Select("public_key", "nonce", "expires_at").
 		From(challengeTableName).
 		Where(squirrel.Eq{"public_key": ct.publicKey})
-	rows, err := qb.Query()
+	rows, err := queryBuilder.Query()
 	if err != nil {
 		return fmt.Errorf("TEST FAILED: failed to create db query, err: %w", err)
 	}
@@ -159,14 +159,14 @@ func (ct *challengeTest) theChallengeShouldBeCreatedAndValid() error {
 }
 
 func (ct *challengeTest) aChallengeThatWasPreviouslyCreated() error {
-	qb := ct.dbQueryBuilder().
+	queryBuilder := ct.dbQueryBuilder().
 		Insert(challengeTableName).
 		Columns("public_key", "nonce", "expires_at").
 		Values(ct.publicKey, ct.nonce, ct.expiresAt).
 		Suffix("RETURNING nonce")
 
 	var createdNonce string
-	err := qb.QueryRow().Scan(&createdNonce)
+	err := queryBuilder.QueryRow().Scan(&createdNonce)
 	if err != nil {
 		return fmt.Errorf("TEST FAILED: failed to insert challenge into db")
 	}
@@ -183,12 +183,12 @@ func (ct *challengeTest) iSendARequestToValidateAChallenge() error {
 		return fmt.Errorf("TEST FAILED: failed to marshal verify challenge request body, err: %w", err)
 	}
 
-	req, err := http.NewRequest(http.MethodPost, "http://localhost:7777/v1/verify-challenge", bytes.NewBuffer(jsonBody))
+	request, err := http.NewRequest(http.MethodPost, "http://localhost:7777/v1/verify-challenge", bytes.NewBuffer(jsonBody))
 	if err != nil {
 		return fmt.Errorf("TEST FAILED: failed to create http request, err: %w", err)
 	}
 	client := &http.Client{}
-	response, err := client.Do(req)
+	response, err := client.Do(request)
 	if err != nil {
 		return fmt.Errorf("TEST FAILED: failed to send request to API endpoint, err: %w", err)
 	}

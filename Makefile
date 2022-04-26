@@ -13,5 +13,8 @@ coverage:
 run:
 	docker compose up
 
-api-tests:
+api-test:
 	cd tests && godog
+
+generate:
+	go generate ./...

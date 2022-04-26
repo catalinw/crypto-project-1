@@ -10,9 +10,9 @@ const (
 	challengeTableName = "challenge"
 )
 
-type challengeDbRepo struct{}
+type ChallengeDbRepository struct{}
 
-func (db *challengeDbRepo) GetChallenges(pubKey, nonce string) ([]*domain.Challenge, error) {
+func (db *ChallengeDbRepository) GetChallenges(pubKey, nonce string) ([]*domain.Challenge, error) {
 	qb := dbQueryBuilder().
 		Select("public_key", "nonce", "expires_at").
 		From(challengeTableName).
@@ -41,7 +41,7 @@ func (db *challengeDbRepo) GetChallenges(pubKey, nonce string) ([]*domain.Challe
 	return challenges, nil
 }
 
-func (db *challengeDbRepo) CreateChallenge(pubKey, nonce string, expiresAt int64) (*domain.Challenge, error) {
+func (db *ChallengeDbRepository) CreateChallenge(pubKey, nonce string, expiresAt int64) (*domain.Challenge, error) {
 	qb := dbQueryBuilder().
 		Insert(challengeTableName).
 		Columns("public_key", "nonce", "expires_at").
