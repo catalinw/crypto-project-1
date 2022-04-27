@@ -11,7 +11,7 @@ coverage:
 	go test -v -coverpkg=./... -coverprofile=coverage.cov ./... && go tool cover -html=coverage.cov
 
 run:
-	docker compose up
+	docker compose up --build
 
 api-test:
 	cd tests && godog
