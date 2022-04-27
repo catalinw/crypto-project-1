@@ -32,7 +32,16 @@ If the dependencies change, re-generate the mocks by running command `make gener
 
 Please import postman collection `welthee.postman_collection.json` in order to call crypto-API endppints.
 
+## How to use crypto-cli to generate signed tokens
 
+Crypto-cli application can be used to create a token that contain a nonce using ES256 signature algorithm
 
+In order to crypto-cli it please run:
+`cd crypto-cli`
+`./crypto-cli jwt <YOUR_NONCE_GENERATED_BY_CRYPTO_API>`
+
+In order to build the crypto-cli application please run:
+`cd crypto-cli`
+`make build`
 
 
