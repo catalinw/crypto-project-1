@@ -18,8 +18,8 @@ Api tests:
 
 Challenge service tests:
 - integration tests for the challenge service 
-- challenge repository is mocked
-- business logic and expected calls to repository dependecy are validated  
+- challenge repository is mocked using [mockgen](https://github.com/golang/mock)
+- business logic and expected calls to repository dependency are validated  
 - run integration tests `make test`
 
 ## Mocks
