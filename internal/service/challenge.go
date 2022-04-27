@@ -107,12 +107,12 @@ func getPublicKey(token *jwt.Token) (interface{}, error) {
 		return nil, err
 	}
 
-	decompressedPubKey, err := decompressPublicKey(compressedPublicKey)
+	decompressedPublicKey, err := decompressPublicKey(compressedPublicKey)
 	if err != nil {
 		logger.Error(domain.CryptoAPIError, domain.UnexpectedError, "failed to decompress public key ", err)
 		return nil, err
 	}
-	stringKey, err := hex.DecodeString(string(decompressedPubKey))
+	stringKey, err := hex.DecodeString(string(decompressedPublicKey))
 	if err != nil {
 		logger.Error(domain.CryptoAPIError, domain.UnexpectedError, "failed to decode hex public key string ", err)
 		return nil, err
@@ -139,11 +139,11 @@ func decompressPublicKey(compressed string) ([]byte, error) {
 		logger.Error(domain.CryptoAPIError, domain.UnexpectedError, "failed to create gzip reader ", err)
 		return nil, err
 	}
-	decompressedPubKey, err := ioutil.ReadAll(gzipReader)
+	decompressedPublicKey, err := ioutil.ReadAll(gzipReader)
 	if err != nil {
 		logger.Error(domain.CryptoAPIError, domain.UnexpectedError, "failed to read bytes from gzip reader ", err)
 		return nil, err
 	}
 
-	return decompressedPubKey, nil
+	return decompressedPublicKey, nil
 }

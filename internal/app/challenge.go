@@ -3,7 +3,6 @@ package app
 import (
 	"crypto-project-1/internal/domain"
 	"crypto-project-1/public"
-	//"encoding/hex"
 	"encoding/json"
 	"github.com/labstack/echo/v4"
 	logger "github.com/sirupsen/logrus"
@@ -13,8 +12,6 @@ import (
 
 // POST v1/challenge
 func (m *CryptoMicroservice) CreateChallenge(ctx echo.Context) error {
-	logger.Info("create challenge request received")
-
 	requestBody, err := ioutil.ReadAll(ctx.Request().Body)
 	if err != nil {
 		logger.Error(domain.CryptoAPIError, domain.UnexpectedError, "could not read request ", err)
@@ -48,7 +45,6 @@ func (m *CryptoMicroservice) CreateChallenge(ctx echo.Context) error {
 		})
 	}
 
-	logger.Info("challenge created successfully")
 	return ctx.JSON(http.StatusOK, public.ApiResponse{
 		Result:  challenge,
 		Code:    public.ChallengeCreateSucceed,
@@ -58,8 +54,6 @@ func (m *CryptoMicroservice) CreateChallenge(ctx echo.Context) error {
 
 // POST v1/verify-challenge
 func (m *CryptoMicroservice) VerifyChallenge(ctx echo.Context) error {
-	logger.Info("verify challenge request received")
-
 	requestBody, err := ioutil.ReadAll(ctx.Request().Body)
 	if err != nil {
 		logger.Error(domain.CryptoAPIError, domain.UnexpectedError, "could not read request ", err)
@@ -112,11 +106,9 @@ func (m *CryptoMicroservice) VerifyChallenge(ctx echo.Context) error {
 		})
 	}
 
-	message := "challenge validation succeeded"
-	logger.Info(message)
 	return ctx.JSON(http.StatusOK, public.ApiResponse{
 		Result:  result,
 		Code:    public.ChallengeValidationSucceeded,
-		Message: message,
+		Message: "challenge validation succeeded",
 	})
 }

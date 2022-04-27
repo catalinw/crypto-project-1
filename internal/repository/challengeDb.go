@@ -13,14 +13,14 @@ const (
 type ChallengeDbRepository struct{}
 
 func (db *ChallengeDbRepository) GetChallenges(pubKey, nonce string) ([]*domain.Challenge, error) {
-	qb := dbQueryBuilder().
+	queryBuilder := dbQueryBuilder().
 		Select("public_key", "nonce", "expires_at").
 		From(challengeTableName).
 		Where(squirrel.And{
 			squirrel.Eq{"public_key": pubKey},
 			squirrel.Eq{"nonce": nonce},
 		})
-	rows, err := qb.Query()
+	rows, err := queryBuilder.Query()
 	if err != nil {
 		logger.Error(domain.CryptoAPIError, domain.UnexpectedError, "failed to create get query ", err)
 		return nil, err
@@ -42,14 +42,14 @@ func (db *ChallengeDbRepository) GetChallenges(pubKey, nonce string) ([]*domain.
 }
 
 func (db *ChallengeDbRepository) CreateChallenge(pubKey, nonce string, expiresAt int64) (*domain.Challenge, error) {
-	qb := dbQueryBuilder().
+	queryBuilder := dbQueryBuilder().
 		Insert(challengeTableName).
 		Columns("public_key", "nonce", "expires_at").
 		Values(pubKey, nonce, expiresAt).
 		Suffix("RETURNING nonce")
 
 	var createdNonce string
-	err := qb.QueryRow().Scan(&createdNonce)
+	err := queryBuilder.QueryRow().Scan(&createdNonce)
 	if err != nil {
 		logger.Error(domain.CryptoAPIError, domain.UnexpectedError, "failed to execute insert query ", err)
 		return nil, err

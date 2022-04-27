@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"crypto-project-1/internal/domain"
 	"database/sql"
 	"fmt"
 	"github.com/Masterminds/squirrel"
@@ -27,12 +28,12 @@ func dbQueryBuilder() squirrel.StatementBuilderType {
 func NewDB() (*sql.DB, error) {
 	host, found := os.LookupEnv(dbHostVar)
 	if !found {
-		err := fmt.Errorf("missing env variable %s", dbHostVar)
+		err := fmt.Errorf("%s missing env variable %s", domain.CryptoAPIError, dbHostVar)
 		return nil, err
 	}
 	p, found := os.LookupEnv(dbPortVar)
 	if !found {
-		err := fmt.Errorf("missing env variable %s", dbPortVar)
+		err := fmt.Errorf("%s missing env variable %s", domain.CryptoAPIError, dbPortVar)
 		return nil, err
 	}
 	port, err := strconv.Atoi(p)
@@ -41,17 +42,17 @@ func NewDB() (*sql.DB, error) {
 	}
 	dbname, found := os.LookupEnv(dbNameVar)
 	if !found {
-		err := fmt.Errorf("missing env variable %s", dbNameVar)
+		err := fmt.Errorf("%s missing env variable %s", domain.CryptoAPIError, dbNameVar)
 		return nil, err
 	}
 	user, found := os.LookupEnv(dbUserVar)
 	if !found {
-		err := fmt.Errorf("missing env variable %s", dbUserVar)
+		err := fmt.Errorf("%s missing env variable %s", domain.CryptoAPIError, dbUserVar)
 		return nil, err
 	}
 	password, found := os.LookupEnv(dbPassVar)
 	if !found {
-		err := fmt.Errorf("missing env variable %s", dbPassVar)
+		err := fmt.Errorf("%s missing env variable %s", domain.CryptoAPIError, dbPassVar)
 		return nil, err
 	}
 

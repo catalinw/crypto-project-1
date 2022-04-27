@@ -22,6 +22,7 @@ const (
 	publicKeyFile    = "public_key.pem"
 	privateKeyFile   = "private_key.pem"
 	tokenTimeToLeave = time.Minute * 5
+	audience         = "wheltee"
 )
 
 var jwtCmd = &cobra.Command{
@@ -36,7 +37,8 @@ var jwtCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(fmt.Sprintf("Private key read from ./%s", privateKeyFile))
+		fmt.Printf("Private key read from ./%s", privateKeyFile)
+		fmt.Println()
 
 		nonce := args[0]
 		now := time.Now()
@@ -44,7 +46,7 @@ var jwtCmd = &cobra.Command{
 		// create claims for token
 		claims := jwt.StandardClaims{
 			Id:        nonce,
-			Audience:  "wheltee",
+			Audience:  audience,
 			IssuedAt:  now.Unix(),
 			NotBefore: now.Unix(),
 			ExpiresAt: now.Add(tokenTimeToLeave).Unix(),
