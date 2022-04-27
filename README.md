@@ -15,8 +15,8 @@ Api tests:
 - these tests will call the real endpoints in the crypto-API
 - in order to run the tests you have to run the application first using `make run`
 - run API tests using:
-`go install github.com/cucumber/godog/cmd/godog@v0.12.0` - just to be sure godog is installed  
-`make api-test`
+    - `go install github.com/cucumber/godog/cmd/godog@v0.12.0` - just to be sure godog is installed  
+    - `make api-test`
 
 Challenge service tests:
 - integration tests for the challenge service 
