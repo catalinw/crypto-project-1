@@ -13,7 +13,7 @@ There are 2 types of tests written for the API: API tests that call the endpoint
 Api tests:
 - cucumber tests written using [godog](https://github.com/cucumber/godog)
 - these tests will call the real endpoints in the crypto-API
-- in order to run the tests you have to run the application first
+- in order to run the tests you have to run the application first using `make run`
 - run API tests using `make api-test`
 
 Challenge service tests:
